@@ -2,7 +2,7 @@ import express from 'express';
 import Post from '../models/Post';
 import { imagesUpload } from '../multer';
 import mongoose from 'mongoose';
-import User from '../models/User';
+import auth, { RequestWithUser } from '../middleware/auth';
 
 const postsRouter = express.Router();
 
@@ -24,31 +24,18 @@ postsRouter.get('/:id', async(req, res, next)=>{
     }
 });
 
-postsRouter.post('/', imagesUpload.single('image'), async(req, res, next)=>{
+postsRouter.post('/', auth, imagesUpload.single('image'), async(req, res, next)=>{
     try{
-        const headerValue = req.get('Authorization');
+        const user = (req as RequestWithUser).user;
 
-        if (!headerValue) return res.status(400).send({error: 'Token not found'});
-    
-        const [_bearer, token] = headerValue.split(' ');
-    
-        if (!token) return res.status(400).send({error: 'Token not found'});
-    
-        const user = await User.findOne({token});
-    
-        if (!user) return res.status(400).send({error: 'User not found'});
-    
-        
         const postData = {
             title: req.body.title,
             description: req.body.description,
             datetime: new Date(),
             image: req.file ? req.file.filename : null, 
-            idUser: user._id,
+            idUser: user?._id,
         };
         
-        user.generateToken();
-        await user.save();
         const post = new Post(postData);
         await post.save();
         return res.send(postData);
