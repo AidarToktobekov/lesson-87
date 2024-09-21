@@ -1,6 +1,6 @@
 import { Post, Comment} from '../../types';
 import { createSlice } from '@reduxjs/toolkit';
-import { commentsFetch, createComment, postFetch, postsFetch } from './postsThunk';
+import { commentsFetch, createComment, createPost, postFetch, postsFetch } from './postsThunk';
 
 interface PostState {
   posts: Post[];
@@ -10,6 +10,7 @@ interface PostState {
   comments: Comment[];
   commentsLoading: boolean;
   commentsFormLoading: boolean;
+  postsFormLoading: boolean;
 }
 
 const initialState: PostState = {
@@ -20,6 +21,7 @@ const initialState: PostState = {
     comments: [],
     commentsLoading: false,
     commentsFormLoading: false,
+    postsFormLoading: false
 };
 
 export const postsSlice = createSlice({
@@ -67,6 +69,15 @@ export const postsSlice = createSlice({
       .addCase(createComment.rejected, (state)=>{
         state.commentsFormLoading = false;
       })
+      .addCase(createPost.pending, (state)=>{
+        state.postsFormLoading = true;
+      })
+      .addCase(createPost.fulfilled, (state)=>{
+        state.postsFormLoading = false;
+      })
+      .addCase(createPost.rejected, (state)=>{
+        state.postsFormLoading = false;
+      });
   },
   selectors: {
     selectPosts: (state) => state.posts,
@@ -76,11 +87,12 @@ export const postsSlice = createSlice({
     selectComments: (state) => state.comments,
     selectCommentsLoading: (state) => state.commentsLoading,
     selectCommentsFormLoading: (state)=>state.commentsFormLoading,
+    selectPostFormLoading: (state)=>state.postsFormLoading,
   },
 });
 
 export const postsReducer = postsSlice.reducer;
 
 
-export const { selectPosts, selectPostsLoading, selectPost, selectPostLoading, selectComments, selectCommentsLoading, selectCommentsFormLoading} =
+export const { selectPosts, selectPostsLoading, selectPost, selectPostLoading, selectComments, selectCommentsLoading, selectCommentsFormLoading, selectPostFormLoading} =
   postsSlice.selectors;

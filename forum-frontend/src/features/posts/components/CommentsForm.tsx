@@ -36,8 +36,8 @@ const CommentsForm:React.FC<Props> = ({idPost})=>{
     }
 
     const submitFormHandler = (event: FormEvent)=>{
-        event.preventDefault();
         dispatch(createComment(state));
+        // event.preventDefault();
     }
     
     return(

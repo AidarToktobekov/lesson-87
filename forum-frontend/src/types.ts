@@ -51,3 +51,9 @@ export interface CommentMutation{
     idPost: string;
     text: string;
 }
+
+export interface PostMutation{
+    title: string;
+    description?: string;
+    image: string | null;
+}

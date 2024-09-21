@@ -32,7 +32,7 @@ postsRouter.post('/', auth, imagesUpload.single('image'), async(req, res, next)=
             title: req.body.title,
             description: req.body.description,
             datetime: new Date(),
-            image: req.file ? req.file.filename : null, 
+            image: req.file ? req.file.filename : null,
             idUser: user?._id,
         };
         
