@@ -46,3 +46,8 @@ export interface Comment{
     text: string;
     datetime: Date;
 }
+
+export interface CommentMutation{
+    idPost: string;
+    text: string;
+}

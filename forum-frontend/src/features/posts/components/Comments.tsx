@@ -2,8 +2,7 @@ import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import { commentsFetch } from "../postsThunk";
 import { selectComments, selectCommentsLoading } from "../postsSlice";
-import Box from '@mui/material/Box';
-import { Grid2, Skeleton } from "@mui/material";
+import { CircularProgress, Grid2 } from "@mui/material";
 import CommentItem from "./CommentItem";
 
 interface Props{
@@ -22,16 +21,12 @@ const Comments:React.FC<Props> = ({idPost})=>{
     return(
         <>
             {isFetching ? (
-                <Box sx={{ width: 300 }}>
-                    <Skeleton />
-                    <Skeleton animation="wave" />
-                    <Skeleton animation={false} />
-                </Box>
+                <CircularProgress/>
             ):(
                 <Grid2>
                     {comments.map((comment)=>{
                         return(
-                            <CommentItem datetime={comment.datetime} text={comment.text} idPost={comment.idPost} idUser={comment.idUser}/>
+                            <CommentItem datetime={comment.datetime} key={comment._id} text={comment.text} idPost={comment.idPost} idUser={comment.idUser}/>
                         )
                     })}    
                 </Grid2>

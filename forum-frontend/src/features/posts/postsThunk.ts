@@ -1,6 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { Post , Comment} from '../../types';
+import { Post , Comment, CommentMutation} from '../../types';
 import axiosApi from '../../axiosApi';
+import { RootState } from '../../app/store';
 
 export const postsFetch = createAsyncThunk<Post[]>(
     'posts/fetchAll',
@@ -24,4 +25,14 @@ export const commentsFetch = createAsyncThunk<Comment[], string>(
   const { data: comments } = await axiosApi.get<Comment[]>(`/comments/${id}`);
   return comments;
 },
+);
+
+export const createComment = createAsyncThunk<void, CommentMutation, {state: RootState}>(
+  'posts/createComment',
+  async (commentMutation, {getState}) => {
+      const user = getState().users.user;
+      if (user) {
+        await axiosApi.post<Comment>('/comments', commentMutation,  {headers: {'Authorization': `Bearer ${user.token}`}});
+      }
+  },
 );

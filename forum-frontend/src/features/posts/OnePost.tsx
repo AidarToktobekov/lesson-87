@@ -5,11 +5,12 @@ import { postFetch } from "./postsThunk";
 import textPost from '../../assets/images/text-post.png';
 import dayjs from 'dayjs';
 import { selectPost, selectPostLoading } from "./postsSlice";
-import { CardMedia, Grid2, Skeleton, styled, Typography } from "@mui/material";
+import { CardMedia, CircularProgress, Grid2, styled, Typography } from "@mui/material";
 import { API_URL } from "../../constants";
 import axiosApi from "../../axiosApi";
 import { User } from "../../types";
 import Comments from "./components/Comments";
+import CommentsForm from "./components/CommentsForm";
 
 
 const ImageCardMedia = styled(CardMedia)({
@@ -24,6 +25,11 @@ const OnePost = ()=>{
     const post = useAppSelector(selectPost);
     const [userState, setUserState] = useState('Loading');
     const postLoding = useAppSelector(selectPostLoading);
+    
+    useEffect(()=>{
+        dispatch(postFetch(id));
+    }, [dispatch]);
+    
     const user = async()=>{
         try{
             const response = await axiosApi.get<User>(`/users/${post?.idUser}`);
@@ -32,11 +38,10 @@ const OnePost = ()=>{
             
         }
     }
-
-    useEffect(()=>{
-        dispatch(postFetch(id));
+    if (post) {
         user();
-    }, [dispatch]);
+    }
+
 
     if (post?.image) {
         cardImage = `${API_URL}/${post.image}`;
@@ -45,7 +50,7 @@ const OnePost = ()=>{
     return(
         <>
             {postLoding ? (
-                <Skeleton variant="rounded" width={'100%'} height={'200px'} />
+                <CircularProgress/>
             ) : (
                 <>
                 <Grid2>
@@ -70,6 +75,12 @@ const OnePost = ()=>{
                             Comments
                         </Typography>
                         <Comments idPost={id}></Comments>
+                    </Grid2>
+                    <Grid2>
+                        <Typography variant="h5">
+                            Add comment
+                        </Typography>
+                        <CommentsForm idPost={id}/>
                     </Grid2>
                 </Grid2>
                 </>
