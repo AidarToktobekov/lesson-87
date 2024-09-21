@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { LoginMutation } from '../types';
+import { LoginMutation } from '../../types';
 import { Alert, Avatar, Box, Button, Link, TextField, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { selectLoginError } from './usersSlice';
 import { login } from './usersThunk';
 

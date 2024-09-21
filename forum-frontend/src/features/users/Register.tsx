@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { RegisterMutation } from '../types';
+import { RegisterMutation } from '../../types';
 import { Avatar, Box, Button, TextField, Typography, Link } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { register } from './usersThunk';
 import { selectRegisterError } from './usersSlice';
 import Grid from '@mui/material/Grid2';

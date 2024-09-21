@@ -4,6 +4,15 @@ import mongoose from 'mongoose';
 
 const usersRouter = express.Router();
 
+usersRouter.get('/:id', async (req, res, next) => {
+  try{
+    const user = await User.findById(req.params.id);
+    return res.send(user)
+  }catch(e){
+    next(e);
+  }
+});
+
 usersRouter.post('/', async (req, res, next) => {
   try {
     const user = new User({
