@@ -7,7 +7,7 @@ const usersRouter = express.Router();
 usersRouter.get('/:id', async (req, res, next) => {
   try{
     const user = await User.findById(req.params.id);
-    return res.send(user)
+    return res.send(user?.username)
   }catch(e){
     next(e);
   }

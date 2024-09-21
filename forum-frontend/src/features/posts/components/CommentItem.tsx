@@ -2,8 +2,6 @@ import dayjs from 'dayjs';
 import {  Grid2, Typography } from '@mui/material';
 import axiosApi from '../../../axiosApi';
 import { useEffect, useState } from 'react';
-import { User } from '../../../types';
-
 
 interface Props{
     idUser: string;
@@ -15,8 +13,8 @@ const CommentItem:React.FC<Props> = ({ idUser, text, datetime})=>{
     const [userState, setUserState] = useState('Loading');
     const user = async()=>{
         try{
-            const response = await axiosApi.get<User>(`/users/${idUser}`);
-            setUserState(response.data.username)
+            const response = await axiosApi.get<string>(`/users/${idUser}`);
+            setUserState(response.data)
         }catch(e){
             
         }
