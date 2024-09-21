@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import config from './config';
 import User from './models/User';
 import Post from './models/Post';
+import Comment from './models/Comment';
 
 const run = async () => {
   await mongoose.connect(config.database);
@@ -23,6 +24,10 @@ const run = async () => {
     username: 'Second user',
     password: '321',
   });
+  firstUser.generateToken();
+  secondUser.generateToken();
+  await firstUser.save();
+  await secondUser.save();
 
   const [
     firstPost,
@@ -42,32 +47,28 @@ const run = async () => {
   const [
     firstPostComments,
     secondPostComments
-  ] = await Post.create({
+  ] = await Comment.create({
     text: '1 comment',
     idUser: firstUser,
     idPost: firstPost,
     datetime: new Date,
   },{
     text: '2 comment',
-    idUser: firstUser,
+    idUser: secondUser._id,
     idPost: firstPost,
     datetime: new Date,
   },{
     text: '3 comment',
     idUser: firstUser,
-    idPost: firstPost,
+    idPost: secondPost,
     datetime: new Date,
   }, {
     text: '4 comment',
     idUser: firstUser,
-    idPost: firstPost,
+    idPost: secondPost,
     datetime: new Date,
   });
 
-  firstUser.generateToken();
-  secondUser.generateToken();
-  await firstUser.save();
-  await secondUser.save();
 
   await db.close();
 };
